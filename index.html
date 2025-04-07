@@ -4,22 +4,24 @@
   <button onclick="openApp()">Open App</button>
   <script>
     function openApp() {
-      const deepLink = 'myapp://screen?param1=value1&param2=value2';
-      const appStoreLink = 'https://apps.apple.com/us/app/your-app/id<YOUR_APP_ID>';
-      const playStoreLink = 'https://play.google.com/store/apps/details?id=<YOUR_PACKAGE_NAME>';
+      const deepLink = 'rollermobile://test?param1=value1&param2=value2';
+      const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099'
+      const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod'
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isAndroid = userAgent.includes('android');
+      const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
 
-      // Attempt to open the app
       window.location = deepLink;
 
-      // Fallback after a timeout if app isn't opened
       setTimeout(() => {
-        const userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.includes('android')) {
-          window.location = playStoreLink;
-        } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
-          window.location = appStoreLink;
+        if (isAndroid) {
+          window.location = androidPlayStoreLink;
+        } else if (isIOS) {
+          window.location = iosAppStoreLink;
+        } else {
+          alert('Please open this link on an Android or iOS device.');
         }
-      }, 1000); // Adjust timeout as needed
+      }, 1000);
     }
   </script>
 </body>
