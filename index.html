@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="openApp()">Open App</button>
+  <script>
+    function openApp() {
+      const deepLink = 'myapp://screen?param1=value1&param2=value2';
+      const appStoreLink = 'https://apps.apple.com/us/app/your-app/id<YOUR_APP_ID>';
+      const playStoreLink = 'https://play.google.com/store/apps/details?id=<YOUR_PACKAGE_NAME>';
+
+      // Attempt to open the app
+      window.location = deepLink;
+
+      // Fallback after a timeout if app isn't opened
+      setTimeout(() => {
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes('android')) {
+          window.location = playStoreLink;
+        } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+          window.location = appStoreLink;
+        }
+      }, 1000); // Adjust timeout as needed
+    }
+  </script>
+</body>
+</html>
