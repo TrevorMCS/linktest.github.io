@@ -42,14 +42,13 @@
     }
 
     function openApp() {
-      const deepLink = 'rollermobile://test';
+      const deepLinkScheme = 'rollermobile://test';
       const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099'
       const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod'
       const userAgent = navigator.userAgent.toLowerCase();
       const isAndroid = userAgent.includes('android');
       const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
 
-      const deepLinkScheme = isAndroid ? androidDeepLinkScheme : isIOS ? iosDeepLinkScheme : null;
       const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
 
       if (!deepLinkScheme || !storeLink) {
