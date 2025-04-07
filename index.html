@@ -25,25 +25,69 @@
 <body>
   <button onclick="openApp()">Open App</button>
   <script>
+    // Function to parse query parameters from the URL
+    function getQueryParams() {
+      const params = {};
+      const queryString = window.location.search.substring(1);
+      if (queryString) {
+        const pairs = queryString.split('&');
+        for (const pair of pairs) {
+          const [key, value] = pair.split('=');
+          if (key && value) {
+            params[key] = decodeURIComponent(value);
+          }
+        }
+      }
+      return params;
+    }
+
     function openApp() {
-      const deepLink = 'rollermobile://test?param1=value1&param2=value2';
+      const deepLink = 'rollermobile://test';
       const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099'
       const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod'
       const userAgent = navigator.userAgent.toLowerCase();
       const isAndroid = userAgent.includes('android');
       const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
 
+      const deepLinkScheme = isAndroid ? androidDeepLinkScheme : isIOS ? iosDeepLinkScheme : null;
+      const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
+
+      if (!deepLinkScheme || !storeLink) {
+        alert('Please open this link on an Android or iOS device.');
+        return;
+      }
+
+      const params = getQueryParams();
+
+      const queryString = Object.keys(params)
+        .map(key => `${key}=${encodeURIComponent(params[key])}`)
+        .join('&');
+      const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
+
+      console.log('Constructed deep link:', deepLink);
+
+      let didOpenApp = false;
+
+      document.addEventListener('visibilitychange', function handleVisibilityChange() {
+        if (document.visibilityState === 'hidden') {
+          didOpenApp = true;
+        } else if (document.visibilityState === 'visible' && !didOpenApp) {
+          window.location = storeLink;
+        }
+      });
+
+      window.addEventListener('pagehide', () => {
+        didOpenApp = true;
+      });
+
+      // Attempt to open the app
       window.location = deepLink;
 
       setTimeout(() => {
-        if (isAndroid) {
-          window.location = androidPlayStoreLink;
-        } else if (isIOS) {
-          window.location = iosAppStoreLink;
-        } else {
-          alert('Please open this link on an Android or iOS device.');
+        if (document.visibilityState === 'visible' && !didOpenApp) {
+          window.location = storeLink;
         }
-      }, 10000);
+      }, 500);
     }
   </script>
 </body>
