@@ -1,31 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROLLER Launch</title>
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                   Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #f0f0f0;
+      height: 100vh;
+      background-color: #fff;
+      color: #333;
     }
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      border-radius: 8px;
-      background-color: #aa91f0;
-      color: white;
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 15px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .description {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    .open-btn {
+      font-size: 16px;
+      padding: 12px 28px;
+      border-radius: 6px;
       border: none;
+      background-color: #007aff;
+      color: white;
       cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: background-color 0.2s ease;
+    }
+
+    .open-btn:hover {
+      background-color: #005fce;
     }
   </style>
 </head>
 <body>
-  <button onclick="openApp()">Open ROLLER</button>
+  <div class="container">
+    <img class="logo" src="https://firebasestorage.googleapis.com/v0/b/roller-production.appspot.com/o/roller-icon.png?alt=media" alt="ROLLER logo">
+    <div class="title">ROLLER</div>
+    <div class="description">
+      ROLLER improves dispatch-to-driver communications by enabling drivers to read and send messages and share scanned documents with their carrier’s dispatch, safety, human resources, and maintenance teams in one integrated app.
+    </div>
+    <button class="open-btn" onclick="openApp()">OPEN</button>
+  </div>
+
   <script>
-    // Function to parse query parameters from the URL
     function getQueryParams() {
       const params = {};
       const queryString = window.location.search.substring(1);
@@ -43,27 +87,23 @@
 
     function openApp() {
       const deepLinkScheme = 'rollermobile://test';
-      const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099'
-      const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod'
+      const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099';
+      const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod';
       const userAgent = navigator.userAgent.toLowerCase();
       const isAndroid = userAgent.includes('android');
       const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
 
       const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
-
       if (!deepLinkScheme || !storeLink) {
         alert('Please open this link on an Android or iOS device.');
         return;
       }
 
       const params = getQueryParams();
-
       const queryString = Object.keys(params)
         .map(key => `${key}=${encodeURIComponent(params[key])}`)
         .join('&');
       const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
-
-      console.log('Constructed deep link:', deepLink);
 
       let didOpenApp = false;
 
@@ -79,7 +119,6 @@
         didOpenApp = true;
       });
 
-      // Attempt to open the app
       window.location = deepLink;
 
       setTimeout(() => {
