@@ -102,15 +102,12 @@
     
       const params = getQueryParams();
       const queryString = Object.keys(params)
-        .map(key => `${key}=${encodeURIComponent(params[key])}`)
+        .map(key => ${key}=${encodeURIComponent(params[key])})
         .join('&');
-      const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
-    
-      document.getElementById('deeplink').setAttribute('href', deepLink);
-      document.getElementById('deeplink').click();
-    
+      const deepLink = queryString ? ${deepLinkScheme}?${queryString} : deepLinkScheme;
+
       let didOpenApp = false;
-    
+
       document.addEventListener('visibilitychange', function handleVisibilityChange() {
         if (document.visibilityState === 'hidden') {
           didOpenApp = true;
@@ -118,16 +115,19 @@
           window.location = storeLink;
         }
       });
-    
+
       window.addEventListener('pagehide', () => {
         didOpenApp = true;
       });
-    
+
+      window.location = deepLink;
+
       setTimeout(() => {
         if (document.visibilityState === 'visible' && !didOpenApp) {
           window.location = storeLink;
         }
       }, 500);
+    }
     }
   </script>
 </body>
