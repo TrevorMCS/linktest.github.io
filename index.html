@@ -99,6 +99,8 @@
         alert(`Please open this link on an Android or iOS device. DLS: ${deepLinkScheme} SL: ${storeLink} UA: ${userAgent}`);
         return;
       }
+
+      alert(`DLS: ${deepLinkScheme} SL: ${storeLink} UA: ${userAgent} isIOS: ${isIOS}`);
     
       const params = getQueryParams();
       const queryString = Object.keys(params)
