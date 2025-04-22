@@ -91,7 +91,8 @@
       const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod';
       const userAgent = navigator.userAgent.toLowerCase();
       const isAndroid = userAgent.includes('android');
-      const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
+      const isIOS = /iphone|ipad|ipod|macintosh/.test(userAgent) && 'ontouchend' in document;
+
     
       const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
       if (!deepLinkScheme || !storeLink) {
