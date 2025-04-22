@@ -66,7 +66,7 @@
     <div class="description">
       ROLLER improves dispatch-to-driver communications by enabling drivers to read and send messages and share scanned documents with their carrier’s dispatch, safety, human resources, and maintenance teams in one integrated app.
     </div>
-    <button class="open-btn" onclick="openApp()">OPEN</button>
+    <a id="deeplink" href="rollermobile://test" style="display:none;">OPEN</a>
   </div>
 
   <script>
@@ -92,21 +92,24 @@
       const userAgent = navigator.userAgent.toLowerCase();
       const isAndroid = userAgent.includes('android');
       const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
-
+    
       const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
       if (!deepLinkScheme || !storeLink) {
         alert('Please open this link on an Android or iOS device.');
         return;
       }
-
+    
       const params = getQueryParams();
       const queryString = Object.keys(params)
         .map(key => `${key}=${encodeURIComponent(params[key])}`)
         .join('&');
       const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
-
+    
+      document.getElementById('deeplink').setAttribute('href', deepLink);
+      document.getElementById('deeplink').click();
+    
       let didOpenApp = false;
-
+    
       document.addEventListener('visibilitychange', function handleVisibilityChange() {
         if (document.visibilityState === 'hidden') {
           didOpenApp = true;
@@ -114,13 +117,11 @@
           window.location = storeLink;
         }
       });
-
+    
       window.addEventListener('pagehide', () => {
         didOpenApp = true;
       });
-
-      window.location = deepLink;
-
+    
       setTimeout(() => {
         if (document.visibilityState === 'visible' && !didOpenApp) {
           window.location = storeLink;
