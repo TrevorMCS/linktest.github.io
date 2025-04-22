@@ -99,6 +99,8 @@
         return;
       }
 
+      alert(`UA: ${userAgent}`);
+
       const params = getQueryParams();
       const queryString = Object.keys(params)
         .map(key => `${key}=${encodeURIComponent(params[key])}`)
