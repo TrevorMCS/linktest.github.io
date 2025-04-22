@@ -95,7 +95,7 @@
     
       const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
       if (!deepLinkScheme || !storeLink) {
-        alert('Please open this link on an Android or iOS device.');
+        alert(`Please open this link on an Android or iOS device. DLS: ${deepLinkScheme} SL: ${storeLink} UA: ${userAgent}`);
         return;
       }
     
