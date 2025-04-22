@@ -122,12 +122,6 @@
       window.addEventListener('pagehide', () => {
         didOpenApp = true;
       });
-
-      const a = document.createElement('a');
-      a.href = deepLink;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
     
       setTimeout(() => {
         if (document.visibilityState === 'visible' && !didOpenApp) {
