@@ -85,39 +85,52 @@
       return params;
     }
 
-    function openApp() {
-      const deepLinkScheme = 'rollermobile://test';
-      const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099';
-      const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod';
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isAndroid = userAgent.includes('android');
-      const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
+      function openApp() {
+        const deepLinkScheme = 'rollermobile://test';
+        const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099';
+        const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod';
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isAndroid = userAgent.includes('android');
+        const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
     
-      const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
-    
-      if (!deepLinkScheme || !storeLink) {
-        alert('Please open this link on an Android or iOS device.');
-        return;
-      }
-    
-      const params = getQueryParams();
-      const queryString = Object.keys(params)
-        .map(key => `${key}=${encodeURIComponent(params[key])}`)
-        .join('&');
-      const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
-    
-      const now = Date.now();
-      const timeout = setTimeout(() => {
-        const elapsed = Date.now() - now;
-        if (elapsed < 1500) {
+        const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
+        if (!deepLinkScheme || !storeLink) {
+          alert('Please open this link on an Android or iOS device.');
           return;
         }
-        window.location = storeLink;
-      }, 1500);
-
-      window.addEventListener('blur', () => clearTimeout(timeout));
-      window.location = deepLink;
-    }
+    
+        const params = getQueryParams();
+        const queryString = Object.keys(params)
+          .map(key => `${key}=${encodeURIComponent(params[key])}`)
+          .join('&');
+        const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
+    
+        let didOpenApp = false;
+    
+        function handleVisibilityChange() {
+          if (document.hidden) {
+            didOpenApp = true;
+          }
+        }
+    
+        function handleBlur() {
+          didOpenApp = true;
+        }
+    
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('blur', handleBlur);
+    
+        window.location = deepLink;
+    
+        setTimeout(() => {
+          document.removeEventListener('visibilitychange', handleVisibilityChange);
+          window.removeEventListener('blur', handleBlur);
+    
+          if (!didOpenApp) {
+            window.location = storeLink;
+          }
+        }, 500);
+      }
   </script>
 </body>
 </html>
