@@ -62,14 +62,27 @@
 </head>
 <body>
   <div class="container">
-    <div class="title">ROLLER v1234567</div>
+    <div class="title">ROLLER v12345678</div>
     <div class="description">
       ROLLER improves dispatch-to-driver communications by enabling drivers to read and send messages and share scanned documents with their carrier's dispatch, safety, human resources, and maintenance teams in one integrated app.
     </div>
-    <button class="open-btn" onclick="openApp()">OPEN</button>
+    <button class="open-btn" onclick="openApp()">OPEN ROLLER</button>
+    <div class="title">App Not Installed? Install from app store:</div>
+    <button class="open-btn" onclick="openStoreLink()">Go To App Store</button>
   </div>
 
   <script>
+    function openStoreLink() {
+      const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099';
+      const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod';
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isAndroid = userAgent.includes('android');
+      const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('macintosh');
+      const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
+
+      window.location = storeLink;
+    }
+    
     function getQueryParams() {
       const params = {};
       const queryString = window.location.search.substring(1);
@@ -85,54 +98,54 @@
       return params;
     }
 
-      function openApp() {
-        const deepLinkScheme = 'rollermobile://test';
-        const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099';
-        const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod';
-        const userAgent = navigator.userAgent.toLowerCase();
-        const isAndroid = userAgent.includes('android');
-        const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('macintosh');
-    
-        const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
-        alert(`UA: ${userAgent} DLS: ${deepLinkScheme} SL: ${storeLink}`);
-        if (!deepLinkScheme || !storeLink) {
-          alert('Please open this link on an Android or iOS device.');
-          return;
-        }
-    
-        const params = getQueryParams();
-        const queryString = Object.keys(params)
-          .map(key => `${key}=${encodeURIComponent(params[key])}`)
-          .join('&');
-        const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
-    
-        let didOpenApp = false;
-    
-        function handleVisibilityChange() {
-          if (document.hidden) {
-            didOpenApp = true;
-          }
-        }
-    
-        function handleBlur() {
+    function openApp() {
+      const deepLinkScheme = 'rollermobile://test';
+      const iosAppStoreLink = 'https://apps.apple.com/us/app/roller/id1630996099';
+      const androidPlayStoreLink = 'https://play.google.com/store/apps/details?id=com.roller.prod';
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isAndroid = userAgent.includes('android');
+      const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('macintosh');
+  
+      const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
+      alert(`UA: ${userAgent} DLS: ${deepLinkScheme} SL: ${storeLink}`);
+      if (!deepLinkScheme || !storeLink) {
+        alert('Please open this link on an Android or iOS device.');
+        return;
+      }
+  
+      const params = getQueryParams();
+      const queryString = Object.keys(params)
+        .map(key => `${key}=${encodeURIComponent(params[key])}`)
+        .join('&');
+      const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
+  
+      let didOpenApp = false;
+  
+      function handleVisibilityChange() {
+        if (document.hidden) {
           didOpenApp = true;
         }
-    
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        window.addEventListener('blur', handleBlur);
-    
-        window.location = deepLink;
-        alert(`didOpenApp: ${didOpenApp}`)
-    
-        setTimeout(() => {
-          document.removeEventListener('visibilitychange', handleVisibilityChange);
-          window.removeEventListener('blur', handleBlur);
-    
-          if (!didOpenApp) {
-            window.location = storeLink;
-          }
-        }, 1500);
       }
+  
+      function handleBlur() {
+        didOpenApp = true;
+      }
+  
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('blur', handleBlur);
+  
+      window.location = deepLink;
+      alert(`didOpenApp: ${didOpenApp}`)
+  
+      setTimeout(() => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        window.removeEventListener('blur', handleBlur);
+  
+        if (!didOpenApp) {
+          window.location = storeLink;
+        }
+      }, 1500);
+    }
   </script>
 </body>
 </html>
