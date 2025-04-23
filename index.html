@@ -135,15 +135,12 @@
       window.addEventListener('blur', handleBlur);
   
       window.location = deepLink;
-  
+
+      // Give the code 3 seconds to nav, then we don't need to watch these anymore.
       setTimeout(() => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         window.removeEventListener('blur', handleBlur);
-  
-        if (!didOpenApp) {
-          window.location = storeLink;
-        }
-      }, 1500);
+      }, 3000);
     }
   </script>
 </body>
