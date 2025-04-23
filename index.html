@@ -118,6 +118,7 @@
         .map(key => `${key}=${encodeURIComponent(params[key])}`)
         .join('&');
       const deepLink = queryString ? `${deepLinkScheme}?${queryString}` : deepLinkScheme;
+      console.log(`params: ${params}, DL: ${deepLink}`)
   
       let didOpenApp = false;
   
