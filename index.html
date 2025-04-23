@@ -62,7 +62,7 @@
 </head>
 <body>
   <div class="container">
-    <div class="title">ROLLER v123</div>
+    <div class="title">ROLLER v1234</div>
     <div class="description">
       ROLLER improves dispatch-to-driver communications by enabling drivers to read and send messages and share scanned documents with their carrier's dispatch, safety, human resources, and maintenance teams in one integrated app.
     </div>
@@ -95,6 +95,7 @@
     
         const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
         alert(`UA: ${UA} DLS: ${deepLinkScheme} SL: ${storeLink}`);
+        console.log(`UA: ${UA} DLS: ${deepLinkScheme} SL: ${storeLink}`);
         if (!deepLinkScheme || !storeLink) {
           alert(`Please open this link on an Android or iOS device. UA: ${UA}`);
           return;
