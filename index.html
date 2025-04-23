@@ -108,7 +108,6 @@
       const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('macintosh');
   
       const storeLink = isAndroid ? androidPlayStoreLink : isIOS ? iosAppStoreLink : null;
-      alert(`UA: ${userAgent} DLS: ${deepLinkScheme} SL: ${storeLink}`);
       if (!deepLinkScheme || !storeLink) {
         alert('Please open this link on an Android or iOS device.');
         return;
@@ -136,7 +135,6 @@
       window.addEventListener('blur', handleBlur);
   
       window.location = deepLink;
-      alert(`didOpenApp: ${didOpenApp}`)
   
       setTimeout(() => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
